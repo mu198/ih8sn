@@ -7,40 +7,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v4
     - name: Setup Android NDK
       run: |
-        wget https://dl.google.com/android/repository/android-ndk-r23b-linux.zip
-        unzip android-ndk-r23b-linux.zip
+        wget https://dl.google.com/android/repository/android-ndk-r27b-linux.zip
+        unzip android-ndk-r27b-linux.zip
     - name: Build (AArch64)
       run: |
-        ANDROID_NDK_HOME=./android-ndk-r23b CXX=aarch64-linux-android31-clang++ ./build.sh
+        ANDROID_NDK_HOME=./android-ndk-r27b CXX=aarch64-linux-android35-clang++ ./build.sh
         zip -r ih8sn-aarch64.zip META-INF system push.ps1 push.sh
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: ih8sn (AArch64)
         path: ih8sn-aarch64.zip
     - name: Build (ARMv7-A)
       run: |
-        ANDROID_NDK_HOME=./android-ndk-r23b CXX=armv7a-linux-androideabi31-clang++ ./build.sh
+        ANDROID_NDK_HOME=./android-ndk-r27b CXX=armv7a-linux-androideabi35-clang++ ./build.sh
         zip -r ih8sn-armv7a.zip META-INF system push.ps1 push.sh
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: ih8sn (ARMv7-A)
         path: ih8sn-armv7a.zip
     - name: Build (i686)
       run: |
-        ANDROID_NDK_HOME=./android-ndk-r23b CXX=i686-linux-android31-clang++ ./build.sh
+        ANDROID_NDK_HOME=./android-ndk-r27b CXX=i686-linux-android35-clang++ ./build.sh
         zip -r ih8sn-i686.zip META-INF system push.ps1 push.sh
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: ih8sn (i686)
         path: ih8sn-i686.zip
     - name: Build (x86_64)
       run: |
-        ANDROID_NDK_HOME=./android-ndk-r23b CXX=x86_64-linux-android31-clang++ ./build.sh
+        ANDROID_NDK_HOME=./android-ndk-r27b CXX=x86_64-linux-android35-clang++ ./build.sh
         zip -r ih8sn-x86_64.zip META-INF system push.ps1 push.sh
-    - uses: actions/upload-artifact@v1
+    - uses: actions/upload-artifact@v4
       with:
         name: ih8sn (x86_64)
         path: ih8sn-x86_64.zip

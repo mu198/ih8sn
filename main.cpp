@@ -9,7 +9,8 @@ void property_override(char const prop[], char const value[], bool add = false) 
     auto pi = (prop_info *) __system_property_find(prop);
 
     if (pi != nullptr) {
-        __system_property_update(pi, value, strlen(value));
+        __system_property_del(prop);
+        __system_property_add(prop, strlen(prop), value, strlen(value));
     } else if (add) {
         __system_property_add(prop, strlen(prop), value, strlen(value));
     }
@@ -51,6 +52,7 @@ std::vector<std::string> property_list(const std::string &prefix, const std::str
         "odm.",
         "oem.",
         "product.",
+        "system_dlkm.",
         "system_ext.",
         "system.",
         "vendor_dlkm.",
@@ -84,6 +86,9 @@ int main(int argc, char *argv[]) {
     const auto build_version_release_or_codename = config.find("BUILD_VERSION_RELEASE_OR_CODENAME");
     const auto debuggable = config.find("DEBUGGABLE");
     const auto manufacturer_name = config.find("MANUFACTURER_NAME");
+    const auto product_brand = config.find("PRODUCT_BRAND");
+    const auto product_device = config.find("PRODUCT_DEVICE");
+    const auto product_model = config.find("PRODUCT_MODEL");
     const auto product_name = config.find("PRODUCT_NAME");
 
     if (is_init_stage && build_fingerprint != config.end()) {
@@ -125,6 +130,18 @@ int main(int argc, char *argv[]) {
     if (is_init_stage && manufacturer_name != config.end()) {
         property_override(property_list("ro.product.", "manufacturer"),
                 manufacturer_name->second.c_str());
+    }
+
+    if (is_init_stage && product_brand != config.end()) {
+        property_override(property_list("ro.product.", "brand"), product_brand->second.c_str());
+    }
+
+    if (is_init_stage && product_device != config.end()) {
+        property_override(property_list("ro.product.", "device"), product_device->second.c_str());
+    }
+
+    if (is_init_stage && product_model != config.end()) {
+        property_override(property_list("ro.product.", "model"), product_model->second.c_str());
     }
 
     if (is_init_stage && product_name != config.end()) {
